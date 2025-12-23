@@ -4,23 +4,17 @@
 
 This project implements a comprehensive network intrusion detection system using classical machine learning algorithms to detect various types of cyberattacks in network traffic. The system is designed to identify anomalous network behavior including DDoS attacks, port scans, infiltration attempts, and web attacks.
 
-## Why This Matters for Cybersecurity
+## Installation and Usage
 
-### Relevance to Telecom Industry (Ericsson Context)
+### Requirements
+```bash
+pip install -r requirements.txt
+```
 
-Modern telecom networks handle billions of packets per second, making manual security monitoring impossible. This project directly aligns with critical cybersecurity needs in telecommunications:
-
-- **Autonomous Network Security**: ML-based detection enables real-time threat identification without human intervention
-- **5G Core Network Protection**: Scales to handle massive traffic volumes in next-generation networks
-- **DDoS Prevention**: Critical for protecting telecom infrastructure from distributed attacks
-- **Anomaly Detection**: Identifies unknown attack patterns that signature-based systems might miss
-
-### Technical Significance
-
-- Uses **traditional ML only** (no deep learning) - more interpretable and faster for real-time deployment
-- **Multi-algorithm comparison** - evaluates 6 different ML approaches to find optimal solution
-- **Practical implementation** - ready for integration into existing network monitoring systems
-- **Comprehensive evaluation** - includes all standard cybersecurity metrics
+### Running the Analysis
+```python
+python intrusion_detection_system.py
+```
 
 ## Dataset: CICIDS2017
 
@@ -56,20 +50,6 @@ The system uses the CICIDS2017 dataset, a comprehensive collection of network tr
 - **Use case**: Real-time deployment where speed is critical
 - **Cybersecurity relevance**: Provides confidence scores for threat assessment
 
-### 4. Gradient Boosting
-- **Strength**: Iteratively improves weak learners
-- **Use case**: Maximizing detection accuracy
-- **Cybersecurity relevance**: Excellent at detecting subtle attack patterns
-
-### 5. K-Nearest Neighbors (KNN)
-- **Strength**: Non-parametric, adapts to data distribution
-- **Use case**: Detecting novel attack variants
-- **Cybersecurity relevance**: Can identify attacks similar to known patterns
-
-### 6. Naive Bayes
-- **Strength**: Fast training and inference
-- **Use case**: Resource-constrained environments
-- **Cybersecurity relevance**: Effective baseline for anomaly detection
 
 ## System Architecture
 
@@ -108,17 +88,7 @@ The system uses the CICIDS2017 dataset, a comprehensive collection of network tr
 - **Configurable Thresholds**: Adjustable sensitivity for different security policies
 - **Standards Compliant**: Uses industry-standard evaluation metrics
 
-## Installation and Usage
 
-### Requirements
-```bash
-pip install -r requirements.txt
-```
-
-### Running the Analysis
-```python
-python intrusion_detection_system.py
-```
 
 ### Expected Output
 1. **Dataset Statistics**: Information about loaded data and class distributions
