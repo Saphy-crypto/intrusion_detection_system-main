@@ -106,22 +106,6 @@ The system uses the CICIDS2017 dataset, a comprehensive collection of network tr
 - **Recall**: 90-97% (high attack detection rates)
 - **F1-Score**: 92-98% (balanced precision/recall)
 
-### Real-world Application Scenarios
-
-#### Network Operations Center (NOC)
-- **Use case**: Real-time monitoring of telecom network traffic
-- **Deployment**: Integration with existing SIEM systems
-- **Benefit**: Automated threat detection reducing analyst workload by 80%
-
-#### 5G Infrastructure Protection
-- **Use case**: Protecting 5G core network from sophisticated attacks
-- **Deployment**: Edge computing nodes for distributed detection
-- **Benefit**: Sub-second threat identification for critical infrastructure
-
-#### Enterprise Network Security
-- **Use case**: Internal network monitoring for advanced persistent threats
-- **Deployment**: On-premises deployment with existing security tools
-- **Benefit**: Detection of insider threats and lateral movement
 
 ## Technical Implementation Details
 
@@ -156,20 +140,6 @@ This approach is based on extensively cited research in network security:
 - **Network Analysis**: Understanding traffic patterns and attack characteristics
 - **Machine Learning Education**: Comprehensive example of ML in security applications
 
-## Future Enhancements
-
-### Advanced Features
-1. **Real-time Streaming**: Apache Kafka integration for live data processing
-2. **Distributed Computing**: Spark implementation for massive scale deployment
-3. **Online Learning**: Adaptive models that learn from new attack patterns
-4. **Explainable AI**: SHAP values for individual prediction explanations
-
-### Integration Capabilities
-1. **SIEM Integration**: Splunk, QRadar, and other security platform connectors
-2. **API Development**: RESTful APIs for microservice architecture
-3. **Cloud Deployment**: AWS, Azure, and GCP deployment configurations
-4. **Container Support**: Docker and Kubernetes orchestration
-
 ## Cybersecurity Impact
 
 ### Industry Benefits
@@ -184,6 +154,3 @@ This approach is based on extensively cited research in network security:
 - **Performance Optimization**: Balanced accuracy and computational efficiency
 - **Operational Integration**: Seamless integration with existing security infrastructure
 
----
-
-This intrusion detection system represents a practical, production-ready implementation of machine learning for cybersecurity, specifically designed to meet the needs of modern network infrastructure while maintaining the interpretability and reliability required for critical security applications.
