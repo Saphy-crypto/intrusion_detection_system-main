@@ -135,6 +135,9 @@ logs/
 *.bak
 *.backup
 
+# Report files
+*.png
+
 # Datasets and data files
 *.csv
 *.tsv
