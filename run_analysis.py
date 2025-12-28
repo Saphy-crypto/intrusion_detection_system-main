@@ -2,7 +2,6 @@
 """
 Quick execution script for the Network Intrusion Detection System
 """
-
 from intrusion_detection_system import NetworkIntrusionDetector
 import sys
 import os
