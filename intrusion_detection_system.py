@@ -2,12 +2,11 @@
 """
 Machine Learning Based Network Intrusion Detection System
 
-This system implements multiple classical ML algorithms to detect network anomalies
+This system implements multiple classical ML algorithms to detect network based intrusions,
 including DDoS attacks, port scans, infiltration, and web attacks in network traffic.
 
-Dataset: CICIDS2017 - a dataset for intrusion detection evaluation
+Dataset: CICIDS2017 - a dataset for intrusion detection evaluation (kaggle.com)
 """
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -23,12 +22,13 @@ from tqdm import tqdm
 import warnings
 import glob
 import os
+import time
 from datetime import datetime
 
 warnings.filterwarnings('ignore')
 
 class NetworkIntrusionDetector:
-    # Network intrusion detection system using multiple ML algorithms
+    #network intrusion detection system using multiple ML algorithms
     def __init__(self, data_path="Datasets/"):
         self.data_path = data_path
         self.data = None
@@ -44,71 +44,65 @@ class NetworkIntrusionDetector:
     def load_and_combine_data(self):
         #load and combine all csv files from the dataset directory
         print("Loading dataset files...")
-        
         csv_files = glob.glob(os.path.join(self.data_path, "*.csv"))
         dataframes = []
         
         for file in tqdm(csv_files, desc="Loading CSV files"):
             print(f"Loading {os.path.basename(file)}...")
-            
+            #read csv files
             df = pd.read_csv(file)
 
-            # Sample large files to reduce memory usage
+            #sample large files to reduce memory usage
             if len(df) > 100_000:
                 df = df.sample(n=100_000, random_state=42)
 
-            # clean column names
+            #clean column names
             df.columns = df.columns.str.strip()
-
             dataframes.append(df)
 
         #combine all dataframes
         self.data = pd.concat(dataframes, ignore_index=True)
         print(f"Combined dataset shape: {self.data.shape}")
         
-        # display label distribution
+        #display label distribution
         print("\nLabel distribution:")
         print(self.data['Label'].value_counts())
         
     def preprocess_data(self):
-        #Clean and preprocess the data for ML models
+        #clean and preprocess data + handle missing values
         print("\nPreprocessing data...")
-        
-        # handle missing values
         print(f"Missing values before cleaning: {self.data.isnull().sum().sum()}")
         
-        # replace infinite values with NaN
+        #replace infinite values with NaN
         self.data.replace([np.inf, -np.inf], np.nan, inplace=True)
         
-        # fill missing values with median for numerical columns
+        #fill missing values with median for numerical columns
         numerical_cols = self.data.select_dtypes(include=[np.number]).columns
         self.data[numerical_cols] = self.data[numerical_cols].fillna(self.data[numerical_cols].median())
         
-        # Convert to more memory-efficient data types
+        #convert to more memory efficient data types
         for col in numerical_cols:
             if self.data[col].dtype == 'float64':
                 self.data[col] = pd.to_numeric(self.data[col], downcast='float')
             elif self.data[col].dtype == 'int64':
                 self.data[col] = pd.to_numeric(self.data[col], downcast='integer')
-        
         print(f"Missing values after cleaning: {self.data.isnull().sum().sum()}")
         
-        #sample data if too large (for SVM memory efficiency)
+        #sample data if too large (for SVM to work efficiently)
         if len(self.data) > 100000:
             print(f"Dataset is large ({len(self.data):,} samples). Sampling 100,000 for efficiency...")
-            # Use stratified sampling to preserve class distribution
+            #use stratified sampling to preserve class distribution
             self.data = self.data.groupby('Label').apply(
                 lambda x: x.sample(min(len(x), max(2, int(100000 * len(x) / len(self.data)))), random_state=42)
             ).reset_index(drop=True)
+            #print new shape and label distribution
             print(f"Sampled dataset shape: {self.data.shape}")
             print("Label distribution after sampling:")
             print(self.data['Label'].value_counts())
         
-        #separate features and target
+        #separate features and target + encode labels
         X = self.data.drop('Label', axis=1)
         y = self.data['Label']
-        
-        #encode labels
         y_encoded = self.label_encoder.fit_transform(y)
         
         #split data
@@ -124,7 +118,6 @@ class NetworkIntrusionDetector:
         print(f"Test set shape: {self.X_test.shape}")
         
     def initialize_models(self):
-        
         #initialize all ML models with optimized parameters
         print("\nInitializing ML models...")
         self.models = {
@@ -149,14 +142,10 @@ class NetworkIntrusionDetector:
         }
         
     def train_and_evaluate_models(self):
-        
         #train all models and evaluate their performance
-       
         print("\nTraining and evaluating models...")
-        
         for name, model in tqdm(self.models.items(), desc="Training models"):
             print(f"\n--- Training {name} ---")
-            
             # choose the correct feature scaling
             if name in ['SVM', 'Logistic Regression']:
                 X_train_use = self.X_train_scaled
@@ -165,10 +154,13 @@ class NetworkIntrusionDetector:
                 X_train_use = self.X_train
                 X_test_use = self.X_test
             
-            # train model with progress indication
+            # train model with progress indication + keep track of time
             print("Training in progress...")
+            start_time = time.time()
             model.fit(X_train_use, self.y_train)
             print("Training completed!")
+            training_time = time.time() - start_time
+            print(f"Training completed in {training_time:.2f} seconds!")
             
             # make predictions
             print("Making predictions...")
@@ -200,9 +192,7 @@ class NetworkIntrusionDetector:
             print(f"F1-Score: {f1:.4f}")
             
     def generate_detailed_report(self):
-        
         #generate evaluation report
-        
         print("\n" + "="*60)
         print("NETWORK INTRUSION DETECTION SYSTEM - EVALUATION REPORT")
         print("="*60)
@@ -230,7 +220,7 @@ class NetworkIntrusionDetector:
         print(f"\n3. DETAILED CLASSIFICATION REPORT - {best_model_name}")
         print("-" * 60)
         
-        # get label names
+        #get label names
         label_names = self.label_encoder.classes_
         print("\nClass Distribution in Test Set:")
         unique, counts = np.unique(self.y_test, return_counts=True)
@@ -246,7 +236,7 @@ class NetworkIntrusionDetector:
                                   target_names=present_label_names, 
                                   labels=unique_test_labels))
         
-        # feature importance for tree based models
+        #feature importance for tree based models
         if best_model_name in ['Random Forest']:
             print(f"\n4. TOP 10 MOST IMPORTANT FEATURES - {best_model_name}")
             print("-" * 60)
@@ -260,9 +250,7 @@ class NetworkIntrusionDetector:
                 print(f"{i+1:2d}. {feature:<30} {importance:.4f}")
     
     def save_results(self):
-        
         #save evaluation results to cvs file
-        
         results_df = pd.DataFrame([
             {
                 'Model': name,
@@ -273,14 +261,13 @@ class NetworkIntrusionDetector:
             }
             for name, results in self.results.items()
         ])
-        
+        #generate timestamped file
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"intrusion_detection_results_{timestamp}.csv"
         results_df.to_csv(filename, index=False)
         print(f"\nResults saved to: {filename}")
         
     def plot_results(self):
-        
         #create visualization of model performance
         metrics = ['accuracy', 'precision', 'recall', 'f1_score']
         models = list(self.results.keys())
@@ -294,7 +281,6 @@ class NetworkIntrusionDetector:
                     'Metric': metric.replace('_', ' ').title(),
                     'Score': self.results[model][metric]
                 })
-        
         plot_df = pd.DataFrame(data_for_plot)
         
         # create plot
@@ -309,9 +295,7 @@ class NetworkIntrusionDetector:
         plt.show()
         
     def run_full_analysis(self):
-        """
-        Execute complete intrusion detection analysis
-        """
+        #execute complete intrusion detection analysis
         print("Starting Network Intrusion Detection System Analysis...")
         print("=" * 60)
         

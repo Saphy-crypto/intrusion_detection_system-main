@@ -16,13 +16,13 @@ def main():
     print("Machine Learning-Based Anomaly Detection")
     print("=" * 70)
     
-    # Check if dataset directory exists
+    #check if dataset directory exists
     if not os.path.exists("Datasets"):
         print("ERROR: Datasets directory not found!")
         print("Please ensure the CICIDS2017 dataset files are in the 'Datasets' folder")
         sys.exit(1)
     
-    # Check if dataset files exist
+    #check if dataset files exist
     csv_files = [f for f in os.listdir("Datasets") if f.endswith('.csv')]
     if not csv_files:
         print("ERROR: No CSV files found in Datasets directory!")
@@ -34,7 +34,7 @@ def main():
         print(f"  - {file}")
     
     try:
-        # Initialize and run the intrusion detection system
+        #initialize and run the intrusion detection system
         detector = NetworkIntrusionDetector()
         detector.run_full_analysis()
         
