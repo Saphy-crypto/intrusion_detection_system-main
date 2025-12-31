@@ -13,7 +13,7 @@ pip install -r requirements.txt
 
 ### Running the Analysis
 ```python
-python intrusion_detection_system.py
+python run_analysis.py
 ```
 
 ## Dataset: CICIDS2017
