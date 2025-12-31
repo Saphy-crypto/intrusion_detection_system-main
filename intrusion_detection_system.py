@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 """
-Machine Learning Based Network Intrusion Detection System
-
-This system implements multiple classical ML algorithms to detect network based intrusions,
-including DDoS attacks, port scans, infiltration, and web attacks in network traffic.
-
-Dataset: CICIDS2017 - a dataset for intrusion detection evaluation (kaggle.com)
+ML based NIDS
+This system implements ML algorithms to detect network based intrusions.
+Dataset used: CICIDS2017
+for intrusion detection evaluation (taken from kaggle.com)
 """
 import pandas as pd
 import numpy as np
@@ -52,7 +50,7 @@ class NetworkIntrusionDetector:
             #read csv files
             df = pd.read_csv(file)
 
-            #sample large files to reduce memory usage
+            #sample large files to reduce memory usage (SVM was too slow on my machine AND would crash)
             if len(df) > 100_000:
                 df = df.sample(n=100_000, random_state=42)
 
@@ -172,7 +170,7 @@ class NetworkIntrusionDetector:
             recall = recall_score(self.y_test, y_pred, average='weighted', zero_division=0)
             f1 = f1_score(self.y_test, y_pred, average='weighted', zero_division=0)
             
-            #store results (without storing predictions to save memory)
+            #store results without storing predictions to save memory
             self.results[name] = {
                 'model': model,
                 'accuracy': accuracy,
@@ -181,7 +179,7 @@ class NetworkIntrusionDetector:
                 'f1_score': f1
             }
             
-            # Store predictions only for best model (determined later)
+            # Store predictions only for best model to bedetermined later
             if not hasattr(self, '_best_predictions'):
                 self._best_predictions = {}
             self._best_predictions[name] = y_pred
@@ -207,7 +205,7 @@ class NetworkIntrusionDetector:
             print(f"{name:<20} {results['accuracy']:<10.4f} {results['precision']:<10.4f} "
                   f"{results['recall']:<10.4f} {results['f1_score']:<10.4f}")
         
-        #find best model
+        # find best model
         best_model_name = max(self.results.keys(), key=lambda k: self.results[k]['f1_score'])
         best_model_results = self.results[best_model_name]
         
