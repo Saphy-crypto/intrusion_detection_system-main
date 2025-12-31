@@ -59,12 +59,6 @@ The system uses the CICIDS2017 dataset, a comprehensive collection of network tr
 3. **Feature Engineering**: Standardizes numerical features for algorithms that require it
 4. **Label Encoding**: Converts attack type strings to numerical labels
 
-### Model Training Framework
-1. **Cross-Validation**: Ensures robust performance estimates
-2. **Stratified Splitting**: Maintains class balance in train/test sets
-3. **Hyperparameter Optimization**: Configured for optimal performance
-4. **Multi-Metric Evaluation**: Uses accuracy, precision, recall, and F1-score
-
 ### Performance Evaluation
 - **Classification Metrics**: Comprehensive reporting for each attack type
 - **Feature Importance Analysis**: Identifies most critical network characteristics
@@ -91,7 +85,7 @@ The system uses the CICIDS2017 dataset, a comprehensive collection of network tr
 ### Expected Output
 1. **Dataset Statistics**: Information about loaded data and class distributions
 2. **Model Training Progress**: Real-time updates during training phase
-3. **Performance Comparison**: Comprehensive metrics for all 6 algorithms
+3. **Performance Comparison**: Comprehensive metrics for all 3 algorithms
 4. **Best Model Selection**: Automatic identification of optimal algorithm
 5. **Feature Analysis**: Most important network characteristics for detection
 6. **Results Export**: CSV file with detailed performance metrics
