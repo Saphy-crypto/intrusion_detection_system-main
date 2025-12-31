@@ -88,8 +88,6 @@ The system uses the CICIDS2017 dataset, a comprehensive collection of network tr
 - **Configurable Thresholds**: Adjustable sensitivity for different security policies
 - **Standards Compliant**: Uses industry-standard evaluation metrics
 
-
-
 ### Expected Output
 1. **Dataset Statistics**: Information about loaded data and class distributions
 2. **Model Training Progress**: Real-time updates during training phase
